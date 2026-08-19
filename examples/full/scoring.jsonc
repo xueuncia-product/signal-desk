@@ -1,0 +1,87 @@
+// Full scoring config.
+//
+//   total = source + author + engagement + relevance   (= 100)
+//
+// Relevance dominates on purpose. Source and author tell you how much to trust
+// an item; only relevance tells you whether it is about your beat. A perfectly
+// sourced item about someone else's market is still noise.
+{
+  "weights": {"source": 20, "author": 15, "engagement": 10, "relevance": 55},
+
+  "source_tiers": {
+    "regulator": 20,      // primary documents: the text itself is the fact
+    "company_blog": 20,   // first-party announcements
+    "media": 16,
+    "aggregator": 16,
+    "forum": 12,
+    "import": 10,
+    "social": 8,          // high volume, low average evidence value
+    "appstore": 6,        // valuable in aggregate, weak per item
+    "default": 6
+  },
+
+  "relevance_normalizer_percentile": 95,
+
+  // Multipliers damp entire categories that are numerous but individually
+  // low-value. Every number here is a judgement you should re-tune, not a
+  // constant of nature.
+  "content_types": [
+    {"name": "support reply", "multiplier": 0.2,
+     "pattern": "(thank you for (contacting|reaching)|we (apolog|sincerely)|kindly (send|share|dm)|your experience matters|we are sorry)"},
+    {"name": "recruitment", "multiplier": 0.3,
+     "pattern": "\\b(we are hiring|now hiring|job (opening|vacancy)|vacanc|apply (here|now|via)|internship)\\b"},
+    {"name": "promotion", "multiplier": 0.5,
+     "pattern": "(use my (code|link)|referral link|link in bio|dm me|order now|download (the app )?today|giveaway)"},
+    {"name": "developer chatter", "multiplier": 0.4,
+     "pattern": "(i (built|made|spent)|my (project|side project|stack)|full-?stack|tutorial)"},
+    {"name": "consumer complaint", "multiplier": 0.8,
+     "pattern": "(scam|worst|useless|terrible service|i want my money)"},
+    // App-store reviews and regulator text are never damped, whatever words
+    // they contain: they are the raw material, not commentary about it.
+    {"name": "primary source", "multiplier": 1.0, "tiers": ["regulator", "appstore"],
+     "pattern": ".*"}
+  ],
+  "default_content_type": {"name": "regular", "multiplier": 1.0},
+
+  // Author weights apply only to handles you have actually verified. Do not
+  // infer authority from a single viral post — that is how a promo account ends
+  // up outranking a regulator.
+  "identities": {
+    "brandaofficial":  {"weight": 15, "label": "BrandA official account"},
+    "brandbofficial":  {"weight": 15, "label": "BrandB official (competitor)"},
+    "regulator_press": {"weight": 15, "label": "Regulator press office"},
+    "sector_reporter": {"weight": 10, "label": "Trade press reporter"},
+    "known_analyst":   {"weight": 8,  "label": "Independent analyst"}
+  },
+
+  "tiers": {"core": 65, "important": 50, "watch": 32},
+  "assign_gap": 0.15,
+  "resurface_gap_days": 21,
+
+  "clustering": {
+    // One announcement reprinted by four outlets is one event with four pieces
+    // of evidence. Corroboration across *different* tiers adds a bounded bonus;
+    // reprints within one tier add nothing.
+    "title_similarity": 0.55,
+    "multi_source_bonus": 2.0,
+    "multi_source_bonus_cap": 6.0
+  },
+
+  "report_limits": {"core": 12, "important": 20, "watch": 25},
+
+  // Mechanical acceptance rules. These are the mistakes that kept recurring
+  // when the same checks were done by eye.
+  "hard_rules": {
+    "max_age_days_for_core": 30,
+    "exclude_from_core_patterns": [
+      "we are hiring", "job opening", "vacanc", "internship",
+      "use my code", "referral link"
+    ],
+    // If two audiences see nearly the same top list, the perspectives are not
+    // actually separating and one of the two reports is redundant.
+    "max_top_overlap": 14,
+    "overlap_window": 20,
+    "required_source_tiers": ["media", "regulator"],
+    "max_failed_sources": 2
+  }
+}

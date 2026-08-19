@@ -1,0 +1,47 @@
+[
+  {
+    "app": "BrandA Business",
+    "content": "After the app update I keep getting logged out and settlement notifications stopped arriving. Reconciliation is now manual for my three shops.",
+    "link": "https://example.com/reviews/branda-business/r1001",
+    "at": "2026-08-18",
+    "userName": "merchant_north_01",
+    "thumbsUp": 34,
+    "score": 2
+  },
+  {
+    "app": "BrandA Business",
+    "content": "Virtual account payouts arrive instantly now. The new dashboard for multi-store owners is a real improvement.",
+    "link": "https://example.com/reviews/branda-business/r1002",
+    "at": "2026-08-17",
+    "userName": "merchant_north_07",
+    "thumbsUp": 12,
+    "score": 5
+  },
+  {
+    "app": "BrandB Business",
+    "content": "BrandB Business added e-invoicing for merchants this week, and the commission statement now shows per-terminal settlement.",
+    "link": "https://example.com/reviews/brandb-business/r2001",
+    "at": "2026-08-18",
+    "userName": "agent_west_03",
+    "thumbsUp": 88,
+    "score": 4
+  },
+  {
+    "app": "BrandB Business",
+    "content": "Thank you for contacting us. We are sorry about your experience, kindly send your merchant ID via DM and we will look into it.",
+    "link": "https://example.com/reviews/brandb-business/r2002",
+    "at": "2026-08-16",
+    "userName": "brandbofficial",
+    "thumbsUp": 3,
+    "score": 3
+  },
+  {
+    "app": "BrandC Merchant",
+    "content": "Terminal firmware update caused failed transaction reversals to pile up. Support says a fix is rolling out.",
+    "link": "https://example.com/reviews/brandc-merchant/r3001",
+    "at": "2026-08-15",
+    "userName": "merchant_central_22",
+    "thumbsUp": 51,
+    "score": 2
+  }
+]

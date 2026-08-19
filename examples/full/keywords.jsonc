@@ -1,0 +1,112 @@
+// Full keyword table — two perspectives over one collection.
+//
+// The two-tier design (proper / gated) came out of a measurement: a flat word
+// list of 130 terms had 68% of its terms match nothing at all, because it was
+// full of internal jargon and of terms in a language the corpus was not written
+// in. Terms only earn their place when they can actually fire.
+{
+  // Brand-gate words are the *gate*, not the signal. They score zero: they
+  // appear in a large share of every item you collect, so they cannot separate
+  // interesting from boring. What they do is license the generic terms below.
+  "brand_gate": [
+    // Your own and your competitors' names go here. BrandA is "us".
+    "branda", "brandb", "brandc", "examplebank",
+    "branda business", "brandb business",
+    // Real, public names are included only so this example produces hits when
+    // run against the public feeds in sources.jsonc. Delete them when you
+    // replace the placeholders above with your actual competitive set.
+    "stripe", "paypal", "visa", "mastercard", "revolut", "wise", "adyen", "block"
+  ],
+
+  "perspectives": {
+    "product": {
+      "label": "Product — merchant experience, platform, terminals",
+      // Self-attributing terms: seeing one already tells you whose thing it is.
+      // Keep this table in sync with the queries in sources.jsonc. A keyword
+      // table that does not overlap what you actually collect scores zero on
+      // almost everything, and the run looks like a quiet week instead of a
+      // misconfiguration. If most events come back unassigned, this is the
+      // first place to look.
+      "proper": {
+        "branda business": 5,
+        "brandb business": 5,
+        "merchant os": 4,
+        "soundbox": 4,
+        "virtual account": 4,
+        "e-invoicing": 5,
+        "instant settlement": 4,
+        "instant payment": 4,
+        "qr payment": 4,
+        "open banking": 4,
+        "tokenization": 3,
+        "chargeback": 3
+      },
+      // Generic terms: only score alongside a brand-gate word.
+      "gated": {
+        "api": 3, "sdk": 2, "integration": 2, "dashboard": 2, "changelog": 3,
+        "kyc": 3, "kyb": 3, "onboarding": 3, "verification": 2,
+        "refund": 3, "reversal": 4, "failed transaction": 4, "success rate": 4,
+        "declined": 3, "downtime": 3, "outage": 3, "incident": 3,
+        "app update": 3, "new version": 2, "crash": 3, "login": 2,
+        "settlement": 3, "reconciliation": 4, "payout": 4,
+        "terminal": 2, "firmware": 3, "device": 2, "pos machine": 3,
+        "notification": 2, "recurring payment": 4, "direct debit": 4
+      },
+      "penalty": {
+        // Consumer-side noise that matches product words but belongs to a
+        // different beat. Tune this rather than deleting the gated terms.
+        "personal loan": 4,
+        "airtime recharge": 3
+      }
+    },
+
+    "commercial": {
+      "label": "Commercial — channel, pricing, regulation, competition",
+      "proper": {
+        "agent banking": 4,
+        "super agent": 4,
+        "mobile money": 4,
+        "remittance": 3,
+        "cross-border payment": 4,
+        "financial inclusion": 3,
+        "interoperability": 4,
+        "interchange": 4,
+        "merchant acquiring": 4,
+        "licence revoked": 6,
+        "enforcement action": 5,
+        "market share": 3
+      },
+      "gated": {
+        "commission": 4, "pricing": 3, "fees": 2, "cashback": 3, "promo": 2,
+        "partnership": 3, "acquisition": 4, "funding round": 4, "ipo": 4,
+        "expansion": 3, "rollout": 3, "launch": 2,
+        "regulation": 3, "licence": 3, "license": 3, "compliance": 3, "sandbox": 4,
+        "agent network": 4, "distributor": 3, "merchant acquisition": 4,
+        "retention": 3, "churn": 3, "incentive": 3, "target": 2,
+        "fraud": 3, "freeze": 3, "restricted": 3, "penalty": 3
+      },
+      "penalty": {
+        "job opening": 5,
+        "internship": 5
+      }
+    }
+  },
+
+  "discovery": {
+    "domain_words": [
+      "merchant", "agent", "terminal", "settlement", "payment", "payout",
+      "licence", "license", "regulation", "commission", "wallet", "acquiring",
+      "lending", "credit", "financing", "invoice", "tax", "compliance",
+      "fraud", "chargeback", "onboarding", "retention", "inventory"
+    ],
+    "noise": ["giveaway", "airdrop", "betting", "casino", "forex signals"],
+    "min_freq": 3,
+    "min_sources": 2,
+    "fresh_days": 10,
+    // Drop your own internal material (monthly reviews, meeting notes, exports)
+    // here as .md/.txt to enable gap scanning: terms your organisation already
+    // discusses that your sources are not returning. This is usually the single
+    // highest-yield output of the whole run.
+    "internal_corpus_dir": "internal"
+  }
+}

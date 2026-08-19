@@ -1,0 +1,62 @@
+// Minimal scoring config. Total of "weights" must be 100 — the loader enforces it.
+{
+  "weights": {
+    "source": 20,      // how much the channel itself is worth
+    "author": 15,      // known, verified publishers only
+    "engagement": 10,  // percentile-ranked *within* a tier, never across channels
+    "relevance": 55    // keyword match against the perspective — the dominant term
+  },
+
+  // tier -> points. Capped at weights.source.
+  "source_tiers": {
+    "regulator": 20,
+    "company_blog": 20,
+    "media": 16,
+    "forum": 12,
+    "social": 8,
+    "import": 10,
+    "default": 6
+  },
+
+  // Relevance is normalised so that this percentile of observed keyword scores
+  // maps to full marks. Using the maximum instead lets one freak item flatten
+  // everything else.
+  "relevance_normalizer_percentile": 95,
+
+  // Multipliers that damp whole categories of content.
+  "content_types": [
+    {"name": "support reply", "multiplier": 0.2,
+     "pattern": "(sorry (for|about) the|please (dm|email) us|we apologi[sz]e|kindly reach out)"},
+    {"name": "job post", "multiplier": 0.3,
+     "pattern": "\\b(we are hiring|now hiring|job opening|apply now|vacanc)"},
+    {"name": "promo", "multiplier": 0.5,
+     "pattern": "(use my code|referral link|link in bio|sign up today|limited offer)"}
+  ],
+  "default_content_type": {"name": "regular", "multiplier": 1.0},
+
+  // Known publishers, matched on the author handle a collector reports.
+  "identities": {
+    "github": {"weight": 15, "label": "vendor account"}
+  },
+
+  // score -> tier boundaries
+  "tiers": {"core": 62, "important": 48, "watch": 30},
+
+  // Items within this relative distance of the top-scoring perspective belong to
+  // both perspectives instead of being forced into one.
+  "assign_gap": 0.15,
+
+  "clustering": {
+    "title_similarity": 0.6,
+    "multi_source_bonus": 2.0,
+    "multi_source_bonus_cap": 6.0
+  },
+
+  "report_limits": {"core": 10, "important": 15, "watch": 20},
+
+  "hard_rules": {
+    "max_age_days_for_core": 14,
+    "exclude_from_core_patterns": ["we are hiring", "job opening"],
+    "max_failed_sources": 1
+  }
+}

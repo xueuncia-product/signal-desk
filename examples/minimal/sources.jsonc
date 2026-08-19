@@ -1,0 +1,45 @@
+// Minimal example — two sources, one perspective. Runs in about a minute.
+// Copy this folder, change the URLs and the keywords, and you have your own beat.
+{
+  // Only items published within this many days of --today enter the run.
+  // Everything older is dropped at collection time, not at ranking time.
+  "window_days": 7,
+
+  "sources": [
+    {
+      "id": "hn_frontpage",
+      "type": "rss",
+      "label": "Hacker News front page",
+      "url": "https://hnrss.org/frontpage",
+      // tier -> source score, defined in scoring.jsonc
+      "tier": "forum",
+      // Keyword pre-filter. On a broad firehose like this one, without a filter
+      // you are ranking the whole internet.
+      "keywords": ["ai", "agent", "llm", "open source", "developer"]
+    },
+    {
+      "id": "gh_blog",
+      "type": "rss",
+      "label": "GitHub Blog",
+      "url": "https://github.blog/feed/",
+      "tier": "company_blog"
+    },
+    {
+      // Anything another tool produced can be imported as a source.
+      // This one ships with sample rows so the whole pipeline runs offline.
+      "id": "inbox",
+      "type": "json_import",
+      "label": "Imported rows",
+      "tier": "import",
+      "path": "inbox/*.json",
+      "map": {
+        "title": "title",
+        "body": "text",
+        "url": "link",
+        "date": "published_at",
+        "author": "author",
+        "engagement": "score"
+      }
+    }
+  ]
+}

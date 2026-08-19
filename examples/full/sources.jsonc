@@ -1,0 +1,149 @@
+// Full example — a competitive/regulatory beat for a payments company in an
+// emerging market, with two audiences (product and commercial) reading one
+// collection. Brand names are placeholders: BrandA is "us", BrandB/BrandC are
+// competitors. Replace them and the sources with your own.
+//
+// The source list is the part of this toolkit that decides everything else.
+// Recall you never collected cannot be recovered by better ranking.
+{
+  "window_days": 7,
+
+  "sources": [
+    // ---------------------------------------------------------------- feeds
+    {
+      "id": "news_sector",
+      "type": "rss",
+      "label": "News search: sector",
+      // Google News search feeds are the cheapest way to cover a topic across
+      // outlets you have not enumerated yet.
+      "url": "https://news.google.com/rss/search?q=%22mobile+money%22+OR+%22agent+banking%22+OR+%22merchant+acquiring%22&hl=en-US&gl=US&ceid=US:en",
+      "tier": "aggregator"
+    },
+    {
+      "id": "trade_press",
+      "type": "rss",
+      "label": "Trade press — fintech",
+      "url": "https://techcrunch.com/category/fintech/feed/",
+      "tier": "media"
+    },
+    {
+      "id": "general_daily",
+      "type": "rss",
+      "label": "General news (title-filtered)",
+      "url": "https://news.google.com/rss/search?q=fintech&hl=en-US&gl=US&ceid=US:en",
+      "tier": "media",
+      // General-interest outlets need a filter, and it must match the TITLE only.
+      // Matching the body with words like "payment" or the local currency name
+      // makes the filter a no-op: those words appear in almost every article.
+      "title_filter": true,
+      "keywords": ["brandb", "brandc", "pos", "point of sale", "agent bank",
+                   "licence", "license", "central bank", "merchant", "wallet"]
+    },
+    {
+      "id": "community",
+      "type": "rss",
+      "label": "Community forum",
+      "url": "https://www.reddit.com/r/fintech/.rss",
+      "tier": "forum",
+      "keywords": ["merchant", "pos", "acquiring", "settlement", "chargeback",
+                   "agent", "wallet", "licence", "license"]
+    },
+    {
+      "id": "regulator_press",
+      "type": "rss",
+      "label": "Regulator press releases",
+      // Swap for your own regulator. Primary documents outrank any reporting of
+      // them; this is the one tier worth over-collecting.
+      //
+      // Measured while writing this example: the obvious-looking feed URL on
+      // another central bank's site answers HTTP 200 with an HTML page, not a
+      // feed. `doctor` cannot catch that -- only a real fetch can. Check the
+      // source_status line for a new source on its first run.
+      "url": "https://www.federalreserve.gov/feeds/press_all.xml",
+      "tier": "regulator"
+    },
+    {
+      "id": "regulator_blocked_example",
+      "type": "rss",
+      "label": "Regulator that blocks plain HTTP (example)",
+      "url": "https://www.fca.org.uk/news/rss.xml",
+      "tier": "regulator",
+      // Measured: this host answers 403 to a plain client. Kept here disabled as
+      // a worked example — when a source blocks you, wire a browser-backed
+      // fetcher through a `command` adapter for that one source. Do not let a
+      // blocked source quietly report as "nothing happened".
+      "enabled": false
+    },
+
+    // -------------------------------------------------------------- watchers
+    {
+      "id": "regulator_register",
+      "type": "page_watch",
+      "label": "Regulator page with no feed",
+      // Stand-in for the pages that matter most and publish least: licence
+      // registers, tariff schedules, programme pages. Pick a server-rendered
+      // one -- a JS-rendered page returns almost no text and is reported `thin`
+      // rather than pretending nothing changed.
+      "url": "https://www.ecb.europa.eu/press/pr/html/index.en.html",
+      "tier": "regulator",
+      // First run records a baseline and emits nothing. Later runs report a
+      // change only when one of these words is present.
+      "keywords": ["licence", "license", "authorised", "revoked", "sanction",
+                   "payment", "settlement"]
+    },
+
+    // --------------------------------------------------------------- imports
+    {
+      "id": "appstore_reviews",
+      "type": "json_import",
+      "label": "App store reviews (imported)",
+      "tier": "appstore",
+      // Produced by whatever review scraper you already use — this toolkit does
+      // not ship one, because every store API has its own terms.
+      "path": "inbox/appstore_reviews.json",
+      "map": {
+        "title": "app",
+        "body": "content",
+        "url": "link",
+        "date": "at",
+        "author": "userName",
+        "engagement": "thumbsUp"
+      }
+    },
+
+    // -------------------------------------------------------------- adapters
+    {
+      "id": "social_search",
+      "type": "command",
+      "label": "Social search (adapter)",
+      "tier": "social",
+      // Disabled by default because it needs a CLI this repo does not ship.
+      // Any command that prints a JSON array to stdout works here.
+      "enabled": false,
+      "command": ["your-social-cli", "search", "{query}", "--limit", "{limit}", "--json"],
+      "root": "",
+      "map": {
+        "body": "text",
+        "url": "url",
+        "date": "created_at",
+        "author": "author.username",
+        "engagement": "public_metrics.view_count"
+      },
+      "cooldown_seconds": 8,
+      "retries": 2,
+      "max_priority": 2,
+      // Queries are split by audience so the two reports do not end up ranking
+      // the same twenty items.
+      "queries": [
+        {"id": "c_rival_field_ops", "priority": 1, "perspective": "commercial", "limit": 30,
+         "query": "BrandB (agent OR commission OR incentive OR target OR retention)"},
+        {"id": "c_pricing", "priority": 1, "perspective": "commercial", "limit": 30,
+         "query": "(BrandB OR BrandC) (pricing OR fees OR cashback OR promo)"},
+        {"id": "p_merchant_app", "priority": 1, "perspective": "product", "limit": 30,
+         "query": "(\"BrandA Business\" OR \"BrandB Business\") (app OR login OR settlement OR notification)"},
+        {"id": "p_terminal", "priority": 2, "perspective": "product", "limit": 30,
+         "query": "(POS OR terminal) (firmware OR failure OR reversal OR downtime) merchant"}
+      ]
+    }
+  ]
+}

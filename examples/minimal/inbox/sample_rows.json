@@ -1,0 +1,50 @@
+[
+  {
+    "title": "Anthropic ships agent skills for Claude Code",
+    "text": "The release adds agent skills and MCP server discovery, plus a new pricing tier for high-volume API users.",
+    "link": "https://example.com/posts/agent-skills",
+    "published_at": "2026-08-18",
+    "author": "example_news",
+    "score": 412
+  },
+  {
+    "title": "GitHub Copilot changes rate limit for free accounts",
+    "text": "GitHub announced a rate limit change and a deprecation notice for the legacy completions endpoint.",
+    "link": "https://example.com/posts/copilot-rate-limit",
+    "published_at": "2026-08-17",
+    "author": "example_news",
+    "score": 233
+  },
+  {
+    "title": "We are hiring: senior platform engineer",
+    "text": "Our team is growing. Apply now for the senior platform engineer role, remote friendly.",
+    "link": "https://example.com/jobs/platform-engineer",
+    "published_at": "2026-08-18",
+    "author": "example_jobs",
+    "score": 12
+  },
+  {
+    "title": "Anthropic ships agent skills for Claude Code",
+    "text": "Duplicate of the same story, arriving from a second query with a tracking parameter attached.",
+    "link": "https://example.com/posts/agent-skills?utm_source=digest",
+    "published_at": "2026-08-18",
+    "author": "example_news",
+    "score": 400
+  },
+  {
+    "title": "Sorry about the downtime yesterday",
+    "text": "We apologise for the disruption. Please DM us your account email and we will look into it.",
+    "link": "https://example.com/posts/downtime-apology",
+    "published_at": "2026-08-16",
+    "author": "example_support",
+    "score": 55
+  },
+  {
+    "title": "Open source MCP registry crosses 1,000 servers",
+    "text": "The community registry now lists more than a thousand MCP servers, with a security review process proposed.",
+    "link": "https://example.com/posts/mcp-registry",
+    "published_at": "2026-08-15",
+    "author": "example_community",
+    "score": 190
+  }
+]

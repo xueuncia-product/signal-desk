@@ -1,0 +1,52 @@
+// Minimal keyword table: one perspective, a handful of terms.
+{
+  // Brand-gate words score NOTHING. They decide whether generic ("gated") terms
+  // are allowed to score at all, because a word like "release" or "pricing"
+  // means nothing until you know whose release it is.
+  "brand_gate": ["openai", "anthropic", "github", "hugging face", "meta ai"],
+
+  "perspectives": {
+    "tooling": {
+      "label": "Developer tooling watch",
+
+      // proper: terms that carry their own attribution. They score on sight.
+      "proper": {
+        "copilot": 5,
+        "claude code": 5,
+        "code interpreter": 4,
+        "mcp": 4,
+        "agent skill": 4
+      },
+
+      // gated: generic terms. They only score when a brand-gate word is present
+      // in the same item.
+      "gated": {
+        "pricing": 3,
+        "rate limit": 3,
+        "deprecat": 4,
+        "benchmark": 2,
+        "release": 2,
+        "open source": 2,
+        "security": 3
+      },
+
+      // penalty: subtract when present. Use sparingly — a penalty term is a
+      // statement that an item is off-beat even when it matches everything else.
+      "penalty": {
+        "hiring": 4,
+        "crypto airdrop": 5
+      }
+    }
+  },
+
+  "discovery": {
+    // Words that make a two-word phrase worth extracting as a candidate term.
+    "domain_words": ["model", "agent", "api", "token", "context", "inference",
+                     "open", "source", "license", "pricing", "latency", "benchmark"],
+    "noise": ["giveaway", "airdrop", "casino"],
+    "min_freq": 2,
+    "min_sources": 2,
+    "fresh_days": 10
+    // "internal_corpus_dir": "internal"   // drop .md files here to enable gap scanning
+  }
+}
