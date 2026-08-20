@@ -10,7 +10,7 @@ Zero dependencies. Python 3.8+. Nothing to install.
 [中文说明](README.zh-CN.md) · [Configuration](docs/configuration.md) ·
 [Adapters](docs/adapters.md) · [Lessons](docs/lessons.md)
 
-![How signal-desk works](docs/flow-en.png)
+![Why it is worth using, what people use it for, and how to run it well](docs/intro-en.png)
 
 ## Try it
 
@@ -39,6 +39,8 @@ teams get near-identical "different" reports.
 signal-desk makes each of those a config decision and a mechanical check.
 
 ## The model
+
+![The three config files on top, the fixed pass below](docs/flow-en.png)
 
 **Sources** are typed blocks in a config file. Four built-in kinds, none needing
 an API key:

@@ -6,7 +6,7 @@
 
 [English](README.md) · [配置说明](docs/configuration.md) · [适配器](docs/adapters.md) · [踩坑记录](docs/lessons.md)
 
-![signal-desk 流程](docs/flow-zh.png)
+![为什么值得用、可以怎么用、建议怎么用](docs/intro-zh.png)
 
 ## 先跑一遍
 
@@ -33,6 +33,8 @@ python3 -m signaldesk run    --config examples/minimal --workdir runs/demo
 signal-desk 把这些变成配置项和机械检查。
 
 ## 模型
+
+![上层是三个配置文件，下层是固定的流水线](docs/flow-zh.png)
 
 **信息源**是配置文件里的类型化块，四种内置类型都不需要 API key：
 
