@@ -6,7 +6,7 @@
 
 [English](README.md) · [配置说明](docs/configuration.md) · [适配器](docs/adapters.md) · [踩坑记录](docs/lessons.md)
 
-![为什么值得用、可以怎么用、建议怎么用](docs/intro-zh.png)
+![一次运行是怎么走的，每一步能配什么](docs/guide-zh.png)
 
 ## 先跑一遍
 
