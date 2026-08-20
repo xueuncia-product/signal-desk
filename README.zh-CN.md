@@ -6,9 +6,7 @@
 
 [English](README.md) · [配置说明](docs/configuration.md) · [适配器](docs/adapters.md) · [踩坑记录](docs/lessons.md)
 
-```
-采集 → 去重 → 归类 → 打分 → 事件聚类 → 排序 → 出报 → 验收
-```
+![signal-desk 流程](docs/flow-zh.png)
 
 ## 先跑一遍
 

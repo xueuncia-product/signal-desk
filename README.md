@@ -10,9 +10,7 @@ Zero dependencies. Python 3.8+. Nothing to install.
 [中文说明](README.zh-CN.md) · [Configuration](docs/configuration.md) ·
 [Adapters](docs/adapters.md) · [Lessons](docs/lessons.md)
 
-```
-collect → dedupe → classify → score → cluster → rank → report → validate
-```
+![How signal-desk works](docs/flow-en.png)
 
 ## Try it
 
